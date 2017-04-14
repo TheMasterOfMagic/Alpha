@@ -1,0 +1,8 @@
+mysql -u root -proot <<EOF 2>/dev/null
+    create database laravel5;
+EOF
+echo file://$HOME/guestbook/app app >> ~/.config/gtk-3.0/bookmarks;
+echo file://$HOME/guestbook/app/Http/Controllers Controllers >> ~/.config/gtk-3.0/bookmarks;
+echo file://$HOME/guestbook/routes routes >> ~/.config/gtk-3.0/bookmarks;
+echo file://$HOME/guestbook/resources/views views >> ~/.config/gtk-3.0/bookmarks;
+echo file://$HOME/guestbook/database database >> ~/.config/gtk-3.0/bookmarks;

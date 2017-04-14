@@ -1,0 +1,16 @@
+# "Rapid Deployment"，快速部署
+# MySQL+Apache2+PHP+phpmyadmin+composer+Laravel+"guestbook"
+# 使用方法：新建一个空文档，将下面的代码复制进去，打开控制台，执行"sh 文件名"即可
+# 安装过程中会有新界面要求输入密码的地方输root即可，其他界面按回车即可
+sudo apt-get install mysql-server mysql-client apache2 php libapache2-mod-php php-mysql phpmyadmin composer;
+composer config -g repo.packagist composer https://packagist.phpcomposer.com;
+composer global require "laravel/installer";
+sudo sh -c 'echo PATH=\"\$PATH:\$HOME/.config/composer/vendor/bin\" >> ~/.profile';
+export PATH="$PATH:$HOME/.config/composer/vendor/bin";
+laravel --version;
+composer create-project --prefer-dist laravel/laravel guestbook;
+if [ -d /usr/share/phpmyadmin ]; then
+sudo mv /usr/share/phpmyadmin guestbook/public;
+fi;  
+git clone git://github.com/TheMasterOfMagic/TheRepository;
+sh ~/TheRepository/part2
