@@ -9,6 +9,7 @@ NFATable = Dict[int, Dict[str, Set[int]]]
 class NFA:
     def __init__(self, table: NFATable, start: int, end: int):
         self.table, self.start, self.end = table, start, end
+        self.pattern = None
 
     @property
     def nodes(self):
@@ -70,6 +71,7 @@ class NFA:
         """
         转换成DFA
         """
+
         # step 1 生成转移表
         symbols = get_column_titles(self.table)
         if '' in symbols:
@@ -102,7 +104,9 @@ class NFA:
                 ends.add(i+1)
             table = replaced_table(table, key, i + 1)
 
-        return DFA(table, start, ends)
+        rv = DFA(table, start, ends)
+        rv.pattern = self.pattern
+        return rv
 
     def be_compatible_with(self, other):
         """
@@ -130,6 +134,7 @@ class NFA:
         x.table.update(y.table)
         x.end = y.end
         x.update_numbers()
+        x.pattern += y.pattern
         return x
 
     def __or__(self, other):
@@ -147,6 +152,7 @@ class NFA:
         rv.link(x.end, '', end)
         rv.link(y.end, '', end)
         rv.update_numbers()
+        rv.pattern = '%s|%s' % (x.pattern, y.pattern)
         return rv
 
     def closure(self):
@@ -163,6 +169,11 @@ class NFA:
         rv.link(rv.end, '', rv.start)
         rv.link(start, '', end)
         rv.start, rv.end = start, end
+        pattern = self.pattern
+        if len(pattern) > 1:
+            pattern = '(%s)' % pattern
+        pattern = '%s*' % pattern
+        rv.pattern = pattern
         return rv
 
     def replace_numbers(self, replace_table):
@@ -185,7 +196,9 @@ class NFA:
             self.end = replace_table[self.end]
 
     def copy(self):
-        return NFA(self.table.copy(), self.start, self.end)
+        rv = NFA(self.table.copy(), self.start, self.end)
+        rv.pattern = self.pattern
+        return rv
 
 
 def string_to_nfa(string):
@@ -255,4 +268,6 @@ def string_to_nfa(string):
     start = 1
     end = len(string) + 1
     table = dict((i+1, {c: {i+2}}) for i, c in enumerate(string))
-    return NFA(table, start, end)
+    rv = NFA(table, start, end)
+    rv.pattern = string
+    return rv

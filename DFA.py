@@ -8,6 +8,7 @@ class DFA:
     def __init__(self, table: DFATable, start: int, ends: Set[int]):
         self.table, self.start, self.ends = table, start, ends
         self.__is_minimal = False  # 是否是最小化过的DFA（对于非最小化的DFA不支持调用其check函数和generate函数）
+        self.pattern = None
 
     def step(self, node: int, symbol: str):
         """
@@ -87,6 +88,7 @@ class DFA:
 
         rv = DFA(table, start, ends)
         rv.__is_minimal = True
+        rv.pattern = self.pattern
         return rv
 
     def check(self, string):
