@@ -1,5 +1,5 @@
-DEBUG = False
-epsilon = 'の'
+DEBUG = 0
+epsilon = 'ϵ'
 
 
 def debug(_debug):
@@ -10,10 +10,9 @@ def debug(_debug):
     def outer_wrapper(func):
         def wrapper(*args, **kwargs):
             global DEBUG
-            if _debug:
-                DEBUG = True
+            DEBUG += _debug
             rv = func(*args, **kwargs)
-            DEBUG = False
+            DEBUG -= _debug
             return rv
         return wrapper
     return outer_wrapper
@@ -25,6 +24,7 @@ def log(*args, **kwargs):
     根据全局变量DEBUG的值决定是否进行输出
     """
     if DEBUG:
+        print('\t' * DEBUG, end='')
         print(*args, **kwargs)
 
 
