@@ -1,6 +1,6 @@
 from functools import reduce
 from typing import *
-from utils import *
+from CompilingTheory.utils import *
 from DFA import DFA
 
 NFATable = Dict[int, Dict[str, Set[int]]]

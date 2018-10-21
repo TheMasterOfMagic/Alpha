@@ -1,5 +1,5 @@
 from typing import *
-from utils import *
+from CompilingTheory.utils import *
 
 DFATable = Dict[int, Dict[str, int]]
 
